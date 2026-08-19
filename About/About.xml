@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Sanguophage Lair</name>
+  <author>Sam Hunt</author>
+  <packageId>shunter.sanguophagelair</packageId>
+  <modVersion>0.1.0</modVersion>
+  <description>Adds a rare world quest site: a sanguophage lair. Descend through a custom portal into a generated lair map where an ancient sanguophage and its thralls guard hemogen-soaked treasures. See the Steam Workshop page for full details.</description>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+    </li>
+    <li>
+      <packageId>ludeon.rimworld.biotech</packageId>
+      <displayName>RimWorld - Biotech</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>ludeon.rimworld</li>
+    <li>ludeon.rimworld.royalty</li>
+    <li>ludeon.rimworld.ideology</li>
+    <li>ludeon.rimworld.biotech</li>
+    <li>ludeon.rimworld.anomaly</li>
+    <li>ludeon.rimworld.odyssey</li>
+    <!-- No third-party entries: any soft integrations will be MayRequire-gated defs,
+         patches against the unified XML document, and post-load DefDatabase lookups,
+         all of which are load-order independent -->
+  </loadAfter>
+</ModMetaData>

@@ -1,0 +1,26 @@
+Sanguophage Lair
+
+[h1]About[/h1]
+Sanguophages haunt RimWorld's lore as ancient, scheming predators - but in vanilla Biotech you mostly meet them one waster-thrall camp at a time. This mod gives them a home worth raiding: a rare world quest site concealing a true sanguophage lair.
+
+[h2]The Lair[/h2]
+[list]
+[*]A rare opportunity-site quest reveals a sanguophage lair on the world map
+[*]The surface site conceals a portal; the real lair is a generated pocket map below
+[*]An ancient sanguophage and its thralls guard hemogen-soaked treasures
+[*]Quest commonality is configurable in mod settings (or disable it entirely)
+[/list]
+
+[hr][/hr]
+
+[h1]Compatibility[/h1]
+[list]
+[*]Requires RimWorld 1.6, the Biotech DLC, and Harmony
+[*]Safe to add to existing saves; not safe to remove
+[*]Not tested with Combat Extended
+[/list]
+
+[hr][/hr]
+
+[h1]Links[/h1]
+Source code, manual downloads and issue tracker: [url=https://github.com/sam-hunt/SanguophageLair]GitHub[/url]

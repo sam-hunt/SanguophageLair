@@ -1,0 +1,63 @@
+# Claude Code (skills are shared/tracked; hooks and local settings stay machine-local)
+.claude/*
+!.claude/skills/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# Build results
+**/bin/
+**/obj/
+Tests/*/Tools/*.dll
+Tests/*/Tools/*.exe
+Tests/*/Tools/*.pdb
+*.cache
+*.zip
+
+# Debug symbols
+*.pdb
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# Build artifacts
+# Assemblies/ holds the compiled DLL that RimWorld loads; it is built locally
+# (post-build deploy) and by CI (StageMod), never tracked in git.
+*/Assemblies/*.dll
+*/Assemblies/*.pdb
+
+# Python bytecode (translation tooling)
+__pycache__/
+
+# RimWorld local testing
+*.rws
+*.rws.old
+
+# OS specific
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Backup files
+*~
+*.bak
+*.orig
+
+# Temporary debug/test files
+debug_*.cs
+debug_*.exe
+test_*.cs
+test_*.exe
+
+# Logs
+*.log
+
+# Research documentation (kept locally, not tracked)
+Docs/

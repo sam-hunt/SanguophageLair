@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- Settings: window category (mod-list entry). Doubles as the localized Steam Workshop
+       title — each language's value must equal the title line of
+       .steamworkshop/Description/<Language>.txt (checker-enforced); change both together. -->
+  <SL_SettingsCategory>Sanguophage Lair</SL_SettingsCategory>
+
+  <!-- Settings: reusable label suffixes. Each includes a leading space, and every applicable one is
+       appended (no precedence between them), so they must read cleanly back to back. -->
+  <SL_DefaultSuffix> (default)</SL_DefaultSuffix>
+  <!-- {0} is another piece of content the current value matches, named from its own def label. -->
+  <SL_SameAsSuffix> (same as {0})</SL_SameAsSuffix>
+
+  <!-- Settings: buttons -->
+  <SL_ResetToDefaults>Reset to defaults</SL_ResetToDefaults>
+
+  <!-- Settings: Quests. SL_LairQuest is the fallback subject name for the lair quest slider,
+       used only until the quest def ships (then the def's own label is injected instead).
+       In SL_QuestWeight, {0} is the quest's name, {1} the value. -->
+  <SL_LairQuest>sanguophage lair</SL_LairQuest>
+  <SL_QuestWeight>{0} quest commonality: {1}</SL_QuestWeight>
+  <SL_LairQuestWeightDesc>Selection weight of the sanguophage lair quest against the other opportunity-site quests offered by traders, beggars and reading. Higher = offered more often. 0 disables the quest entirely.</SL_LairQuestWeightDesc>
+
+</LanguageData>
