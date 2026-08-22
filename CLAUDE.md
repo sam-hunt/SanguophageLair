@@ -119,6 +119,13 @@ auto-patches via Harmony attribute discovery (`PatchAll`). Harmony ID: `shunter.
 `Source/1.6/Core/SL_Startup.cs` (`[StaticConstructorOnStartup]`) runs after defs load and applies
 settings that override def fields. **Settings access:** `SanguophageLairMod.Settings`.
 
+**Patch-timing hazard (other mods' methods):** `PatchAll()` runs from the `Mod` subclass
+constructor — BEFORE any defs are loaded. Applying a detour JIT-compiles the target and runs its
+declaring type's static ctor, so a patch targeting ANOTHER MOD's method can permanently break that
+mod when its cctor resolves defs (the BetterTradersGuild v1.1.0 CWTL incident). No patch classes
+exist here yet; when the first ones land, keep foreign-target patches off the ctor-time pass —
+worked example: BetterTradersGuild's `Core/DeferredModPatches.cs`.
+
 ### Naming conventions
 
 - Def prefix and Keyed prefix: `SL_`. Defs live at `1.6/Defs/<DefTypeName>Defs/<Name>.xml`, one
