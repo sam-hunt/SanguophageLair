@@ -110,6 +110,12 @@ from the test bin copy target throws `BadImageFormatException`/`TypeLoadExceptio
 only — and one such failure can poison static state and surface as unrelated value mismatches
 downstream.
 
+**Startup smoke test (pre-release):** `python3 Scripts/integration-smoke-test.py` (game closed)
+boots the mod on its pinned minimal list, then classifies Player.log errors by origin and fails on
+anything attributed to this mod. Run before every release (wired into the release skill); thin
+shim over the shared engine in `l10n/smoke/` (born from the BetterTradersGuild v1.1.0 CWTL
+incident).
+
 ## Architecture
 
 ### Entry Point
