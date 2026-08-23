@@ -1,0 +1,44 @@
+{
+  "meta": {
+    "gameBuild": "1.6.4871 rev591",
+    "activeDlcs": [
+      "Core",
+      "Biotech"
+    ],
+    "modPackageId": "shunter.sanguophagelair",
+    "modName": "Sanguophage Lair",
+    "activeMods": [
+      "brrainz.harmony",
+      "ludeon.rimworld",
+      "ludeon.rimworld.biotech",
+      "shunter.sanguophagelair",
+      "shunter.l10nprobe"
+    ]
+  },
+  "defInjections": {
+    "MapGeneratorDef": {
+      "SL_Lair.label": {
+        "english": "sanguophage lair",
+        "required": true
+      }
+    },
+    "ThingDef": {
+      "SL_AncientStairwell.description": {
+        "english": "A broad stone stairwell spiraling down into darkness. The stonework is ancient, but the steps are worn smooth by long use. Something below must be maintaining it.",
+        "required": true
+      },
+      "SL_AncientStairwell.label": {
+        "english": "ancient stairwell",
+        "required": true
+      },
+      "SL_AncientStairwellExit.description": {
+        "english": "The foot of a stone stairwell spiraling up toward the surface.",
+        "required": true
+      },
+      "SL_AncientStairwellExit.label": {
+        "english": "ancient stairwell exit",
+        "required": true
+      }
+    }
+  }
+}

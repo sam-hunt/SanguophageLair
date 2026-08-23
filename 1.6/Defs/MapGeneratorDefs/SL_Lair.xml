@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    SL_Lair: the pocket-map generator behind SL_AncientStairwell's portal.
+
+    SCAFFOLD. Today this is a bare underground cave: Odyssey InsectLair's genstep skeleton
+    minus its insect content and ruins scatter, so the portal is traversable end-to-end while
+    the real lair subtree (custom GenSteps, layout defs) is built. Every def referenced here
+    is Core-owned (verified against Data/ - no Odyssey/Anomaly dependency).
+
+    PlaceCaveExit is the placeholder exit step: GenStep_PlaceCaveExit hardcodes vanilla
+    CaveExit (rope look, self-links to the entrance via PocketMapExit.SpawnSetup) and sets
+    PlayerStartSpot. The lair layout replaces it with our own genstep that spawns
+    portal.exitDef (SL_AncientStairwellExit) with stuff matching the lair rock.
+
+    label is player-facing: MapPortal composes it into "View sanguophage lair" and
+    "Exit sanguophage lair" gizmo/command strings.
+  -->
+  <MapGeneratorDef>
+    <defName>SL_Lair</defName>
+    <label>sanguophage lair</label>
+    <isUnderground>true</isUnderground>
+    <forceCaves>true</forceCaves>
+    <ignoreAreaRevealedLetter>true</ignoreAreaRevealedLetter>
+    <disableCallAid>true</disableCallAid>
+    <pocketMapProperties>
+      <biome>Underground</biome>
+      <temperature>15</temperature>
+      <tileMutators>
+        <li>UndergroundCave</li>
+      </tileMutators>
+    </pocketMapProperties>
+    <genSteps>
+      <li>ElevationFertility</li>
+      <li>MutatorPostElevationFertility</li>
+      <li>Underground_RocksFromGrid</li>
+      <li>Terrain</li>
+      <li>MutatorPostTerrain</li>
+      <li>RockChunks</li>
+      <li>PlaceCaveExit</li>
+      <li>Plants</li>
+      <li>MutatorFinal</li>
+      <li>Fog</li>
+    </genSteps>
+  </MapGeneratorDef>
+
+</Defs>

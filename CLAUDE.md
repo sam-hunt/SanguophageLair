@@ -202,10 +202,18 @@ one central `VerifyAll()` triggers them right after `PatchAll()` so API drift su
 
 ### Headline feature: the lair quest site
 
-Not built yet. The planned shape: a rare opportunity-site quest (`QuestScriptDef` +
+Partially built. The planned shape: a rare opportunity-site quest (`QuestScriptDef` +
 `SitePartDef` + `WorldObjectDef`) places the lair on the world map; the surface map holds a
 custom portal building (a `MapPortal` subclass) that generates and links a pocket map; a
 dedicated `MapGeneratorDef` subtree (custom `GenStepDef`s, layout defs) builds the lair itself.
+
+**Shipped so far:** the portal pair (`SL_AncientStairwell`/`SL_AncientStairwellExit`, stony-
+stuffable — `1.6/Defs/ThingDefs/AncientStairwell.xml` + `Source/1.6/MapPortals/`) and a
+scaffold pocket-map generator (`SL_Lair`, a bare Core-only cave) — decompile-verified call
+paths and the stuff/two-layer-draw rationale live in those files' headers. Still pending: the
+quest/site defs, the real lair `MapGeneratorDef` subtree (which replaces the scaffold's
+`PlaceCaveExit` with a genstep spawning `portal.exitDef` with lair-matched stuff), and the
+site GenStep that spawns the entrance with its stone.
 
 **In-family precedent — read before designing:** BetterTradersGuild's smuggler's den quest →
 cargo vault pocket map is the full worked example
@@ -231,8 +239,10 @@ fields and C#-default comp strings that never appear in this repo's XML — prod
 `l10n/probe/`; build/deploy it only from the canonical `~/dev/rimworld-l10n` checkout) through
 the game's own walker. The checker refuses to run against stale expectations, so new content
 forces a regen; the release skill regenerates every release. The public language roster lives in
-CONTRIBUTING.md and must move in the same commit as any language change. **The sidecar does not
-exist yet** — generate it once the first defs land (game must be closed).
+CONTRIBUTING.md and must move in the same commit as any language change. New-machine note: the
+probe only dumps mods ticked in its own settings
+(`Config/Mod_L10nProbe_L10nProbeMod.xml` on the Windows side) — an absent dump despite a correct
+pinned list means the packageId isn't registered there.
 
 - **Shared l10n toolkit (`l10n/` submodule):** the family-wide translation process, per-language
   mechanics references, cross-language lessons, Workshop conventions, and the checker/refresh

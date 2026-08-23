@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    The two ends of the lair portal: SL_AncientStairwell (surface site map) and
+    SL_AncientStairwellExit (pocket map). Pattern source: Odyssey's InsectLairEntrance
+    (Data/Odyssey/Defs/ThingDefs_Buildings/Buildings_Natural.xml) sized up 6x6 -> 7x7, with
+    Core's PocketMapExit/CaveExit (Data/Core/Defs/ThingDefs_Buildings/Buildings_Misc.xml)
+    for the exit side.
+
+    Both ends are made-from-stuff (Stony) so the stairwell matches the lair's rock. The map
+    generator that spawns them owns the stuff choice (ThingMaker.MakeThing with an explicit
+    stony stuff; spawning without one logs an error and falls back to the default stony
+    stuff). The textures are authored near-white grayscale so the stuff tint carries the
+    color. costStuffCount only feeds derived stats here (neither end is player-buildable or
+    killable); ~5/cell like walls, rounded to 250.
+
+    Decompile-verified call paths (1.6 Assembly-CSharp) this file relies on:
+    - MapPortal is concrete: first entry runs GetOtherMap() -> PocketMapUtility.GeneratePocketMap
+      (def.portal.pocketMapSize, def.portal.pocketMapGenerator); enter gizmo, load dialog and
+      "View <generator label>" gizmo are all base class. pocketMapSize stays at its default
+      (100) until lair map-gen tuning says otherwise.
+    - PocketMapExit.SpawnSetup self-links: entrance = PocketMapUtility.currentlyGeneratingPortal,
+      entrance.exit = this. The exit only needs to be spawned during pocket-map generation.
+    - portal.exitDef has NO vanilla C# consumer (GenStep_PlaceCaveExit hardcodes CaveExit).
+      It is declared here as the contract our own exit-placement genstep reads (future
+      map-gen work), the same role it plays on vanilla defs.
+    - Pocket-map teardown is vanilla: Game.DeinitAndRemoveMap destroys pocket maps whose
+      sourceMap is the removed map, so abandoning the surface site can't leak the lair map.
+    - tickerType Normal (vanilla InsectLairEntrance omits it and defaults to Never) because
+      MapPortal.Tick is what raises the stalled-load message (MessageCantLoadMoreIntoPortal);
+      Core's PocketMapExit parent already sets it for the exit.
+
+    Deliberate omissions vs InsectLairEntrance: no CompProperties_Sealable (whether the
+    player may collapse the lair entrance is a quest-design decision, not a portal one) and
+    no portal.enteredLetter*/traverseSound (first-entry messaging is quest flavor, decided
+    with the quest; the only vanilla traverse sound is Anomaly's).
+  -->
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>SL_AncientStairwell</defName>
+    <label>ancient stairwell</label>
+    <description>A broad stone stairwell spiraling down into darkness. The stonework is ancient, but the steps are worn smooth by long use. Something below must be maintaining it.</description>
+    <thingClass>SanguophageLair.AncientStairwell</thingClass>
+    <size>(7,7)</size>
+    <useHitPoints>false</useHitPoints>
+    <destroyable>false</destroyable>
+    <rotatable>false</rotatable>
+    <tickerType>Normal</tickerType>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <canOverlapZones>false</canOverlapZones>
+    <stuffCategories>
+      <li>Stony</li>
+    </stuffCategories>
+    <costStuffCount>250</costStuffCount>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/Misc/AncientStairwellEntrance</texPath>
+      <drawSize>(7,7)</drawSize>
+    </graphicData>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <fillPercent>0</fillPercent>
+    <passability>Impassable</passability>
+    <holdsRoof>true</holdsRoof>
+    <building>
+      <isEdifice>true</isEdifice>
+      <deconstructible>false</deconstructible>
+      <isTargetable>false</isTargetable>
+      <isInert>true</isInert>
+      <claimable>false</claimable>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <portal>
+      <pocketMapGenerator>SL_Lair</pocketMapGenerator>
+      <exitDef>SL_AncientStairwellExit</exitDef>
+    </portal>
+    <statBases>
+      <Flammability>0</Flammability>
+    </statBases>
+    <inspectorTabs>
+      <li>ITab_ContentsMapPortal</li>
+    </inspectorTabs>
+  </ThingDef>
+
+  <!-- Two draw layers: graphicData is the stone ring (map-mesh printed, stuff-tinted by the
+       engine); the AncientStairwellExit class draws the _Stairs texture just below it with
+       the same stuff tint (see that file's header for why it can't be a
+       CompProperties_DrawAdditionalGraphics overlay). drawerType MapMeshAndRealTime makes
+       both paths run, exactly like vanilla CaveExit's ring + rope.
+       The glow is a faint cool spill from the surface opening, dimmer than CaveExit's
+       (radius 10): sanguophages shun daylight, so their stairwell reads as barely lit. -->
+  <ThingDef ParentName="PocketMapExit">
+    <defName>SL_AncientStairwellExit</defName>
+    <label>ancient stairwell exit</label>
+    <description>The foot of a stone stairwell spiraling up toward the surface.</description>
+    <thingClass>SanguophageLair.AncientStairwellExit</thingClass>
+    <size>(7,7)</size>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <stuffCategories>
+      <li>Stony</li>
+    </stuffCategories>
+    <costStuffCount>250</costStuffCount>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/Misc/AncientStairwellExit</texPath>
+      <drawSize>(7,7)</drawSize>
+    </graphicData>
+    <statBases>
+      <Flammability>0</Flammability>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>6</glowRadius>
+        <glowColor>(140,160,184,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>
