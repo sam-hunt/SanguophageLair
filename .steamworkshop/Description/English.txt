@@ -1,12 +1,12 @@
 Sanguophage Lair
 
 [h1]About[/h1]
-Sanguophages haunt RimWorld's lore as ancient, scheming predators - but in vanilla Biotech you mostly meet them one waster-thrall camp at a time. This mod gives them a home worth raiding: a rare world quest site concealing a true sanguophage lair.
+Sanguophages haunt RimWorld's lore as ancient, scheming mysteries - but in vanilla Biotech you mostly meet them alone in shuttles or rare meetings at your own colony. This mod gives them a home worth raiding: a rare world quest site concealing a true sanguophage lair.
 
 [h2]The Lair[/h2]
 [list]
 [*]A rare opportunity-site quest reveals a sanguophage lair on the world map
-[*]The surface site conceals a portal; the real lair is a generated pocket map below
+[*]The surface site houses a lone Ancient Stairwell; the real lair lies in a generated pocket map below
 [*]An ancient sanguophage and its thralls guard hemogen-soaked treasures
 [*]Quest commonality is configurable in mod settings (or disable it entirely)
 [/list]
