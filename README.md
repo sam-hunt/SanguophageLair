@@ -29,7 +29,6 @@ Sanguophages haunt RimWorld's lore as ancient, scheming predators - but in vanil
 
 - **RimWorld 1.6** or later
 - **Biotech DLC** (required - the lair is built on Biotech's sanguophage xenotype, genes, and hemogen systems)
-- **Harmony** (auto-download from Steam Workshop if you don't have it)
 
 ## Installation
 
@@ -65,13 +64,7 @@ For development setup, see [CLAUDE.md](CLAUDE.md).
 
 **Author**: Sam Hunt ([@sam-hunt](https://github.com/sam-hunt))
 
-**Built With**:
-
-- [Harmony](https://github.com/pardeike/Harmony) by Andreas Pardeike - Runtime patching library
-- RimWorld modding API, community examples
-
 **Special Thanks**:
 
 - [Ludeon Studios](https://ludeon.com) for RimWorld and modding API
-- [The RimWorld modding community](https://steamcommunity.com/app/294100/workshop/) for inspiration and working examples
-- [Claude Code](https://claude.com/claude-code) for breathing C#
+- [The RimWorld modding community](https://steamcommunity.com/app/294100/workshop/) for inspiration
