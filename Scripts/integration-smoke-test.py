@@ -23,10 +23,10 @@ engine.PACKAGE_ID = "shunter.sanguophagelair"
 
 # RATIONALE: this is exactly SL's l10n CANONICAL_ACTIVE_MODS - Biotech is the
 # hard dep the lair's sanguophage xenotype/genes/hemogen systems are built
-# on. No optional integration mods exist yet, so there is no seam to name;
-# this is a clean-startup-log gate. Probe last (auto-quit).
+# on; the mod is Harmony-free by policy (see CLAUDE.md). No optional
+# integration mods exist yet, so there is no seam to name; this is a
+# clean-startup-log gate. Probe last (auto-quit).
 engine.SMOKE_ACTIVE_MODS = [
-    "brrainz.harmony",
     "ludeon.rimworld",
     "ludeon.rimworld.biotech",
     "shunter.sanguophagelair",

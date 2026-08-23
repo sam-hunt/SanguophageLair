@@ -6,10 +6,10 @@ Guidance for Claude Code (claude.ai/code) when working in this repository.
 
 **Sanguophage Lair** is a RimWorld 1.6 mod adding a rare world quest site: a sanguophage lair
 entered through a custom portal onto a generated pocket map (a custom MapGeneratorDef subtree).
-Requires Harmony and the Biotech DLC (hard dependency — the lair is built on Biotech's
+Requires the Biotech DLC (hard dependency — the lair is built on Biotech's
 sanguophage xenotype, genes, and hemogen systems).
 
-**Key technologies:** C# (.NET Framework 4.7.2), Harmony, RimWorld modding API, XML defs.
+**Key technologies:** C# (.NET Framework 4.7.2), RimWorld modding API, XML defs.
 
 ### Where documentation lives
 
@@ -120,17 +120,24 @@ incident).
 
 ### Entry Point
 
-`Source/1.6/Core/SanguophageLairMod.cs` — `Mod` subclass whose constructor wires settings and
-auto-patches via Harmony attribute discovery (`PatchAll`). Harmony ID: `shunter.sanguophagelair`.
+`Source/1.6/Core/SanguophageLairMod.cs` — `Mod` subclass whose constructor wires settings.
 `Source/1.6/Core/SL_Startup.cs` (`[StaticConstructorOnStartup]`) runs after defs load and applies
 settings that override def fields. **Settings access:** `SanguophageLairMod.Settings`.
 
-**Patch-timing hazard (other mods' methods):** `PatchAll()` runs from the `Mod` subclass
-constructor — BEFORE any defs are loaded. Applying a detour JIT-compiles the target and runs its
-declaring type's static ctor, so a patch targeting ANOTHER MOD's method can permanently break that
-mod when its cctor resolves defs (the BetterTradersGuild v1.1.0 CWTL incident). No patch classes
-exist here yet; when the first ones land, keep foreign-target patches off the ctor-time pass —
-worked example: BetterTradersGuild's `Core/DeferredModPatches.cs`.
+**Harmony-free by policy:** the mod ships no Harmony wiring at all — no package reference, no
+About.xml dependency, no `PatchAll`. The planned feature set is achievable through defs and
+vanilla extension points. If a patch ever becomes genuinely unavoidable, the same change that
+adds the first patch class must re-add Lib.Harmony (`ExcludeAssets=runtime`) to the csproj and
+`brrainz.harmony` to About.xml (modDependencies + loadAfter), and observe the hazard below. The
+patch-pattern rules later in this file (Prefix discipline, private patch targets, `*Patches`
+namespaces) apply from that moment.
+
+**Patch-timing hazard (other mods' methods):** `PatchAll()` run from a `Mod` subclass
+constructor executes BEFORE any defs are loaded. Applying a detour JIT-compiles the target and
+runs its declaring type's static ctor, so a patch targeting ANOTHER MOD's method can permanently
+break that mod when its cctor resolves defs (the BetterTradersGuild v1.1.0 CWTL incident). If
+patches ever land here, keep foreign-target patches off the ctor-time pass — worked example:
+BetterTradersGuild's `Core/DeferredModPatches.cs`.
 
 ### Naming conventions
 
@@ -198,7 +205,7 @@ skips just that one patch instead of `PatchAll` throwing and aborting every late
 **Reflection self-checks:** when the first string-named reflection site lands, adopt the family
 pattern (see BetterTradersGuild's `Core/ReflectionVerification.cs` and its CLAUDE.md section):
 each reflecting class caches its own `FieldInfo`/`MethodInfo` and exposes `VerifyReflection()`;
-one central `VerifyAll()` triggers them right after `PatchAll()` so API drift surfaces at startup.
+one central `VerifyAll()` triggers them from `SL_Startup` so API drift surfaces at startup.
 
 ### Headline feature: the lair quest site
 

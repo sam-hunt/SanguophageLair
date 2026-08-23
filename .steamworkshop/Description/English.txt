@@ -15,7 +15,7 @@ Sanguophages haunt RimWorld's lore as ancient, scheming mysteries - but in vanil
 
 [h1]Compatibility[/h1]
 [list]
-[*]Requires RimWorld 1.6, the Biotech DLC, and Harmony
+[*]Requires RimWorld 1.6 and the Biotech DLC
 [*]Safe to add to existing saves; not safe to remove
 [*]Not tested with Combat Extended
 [/list]

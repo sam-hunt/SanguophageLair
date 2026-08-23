@@ -20,13 +20,13 @@ engine.PACKAGE_ID = "shunter.sanguophagelair"
 
 # RATIONALE: Biotech is the mod's only hard dependency (the sanguophage lair
 # quest site is built on Biotech's sanguophage xenotype, genes, and hemogen
-# systems; without Biotech the defs do not load). This repo is standalone —
-# it is not part of a sibling family that boots together — so the list is
-# the minimal deterministic set. See the engine's header for the general
-# membership rule, the lowercase-id warning, and the pinning rationale;
-# order is load order, the probe last.
+# systems; without Biotech the defs do not load). The mod is Harmony-free by
+# policy (see CLAUDE.md), so brrainz.harmony is deliberately absent. This
+# repo is standalone — it is not part of a sibling family that boots
+# together — so the list is the minimal deterministic set. See the engine's
+# header for the general membership rule, the lowercase-id warning, and the
+# pinning rationale; order is load order, the probe last.
 engine.CANONICAL_ACTIVE_MODS = [
-    "brrainz.harmony",
     "ludeon.rimworld",
     "ludeon.rimworld.biotech",
     "shunter.sanguophagelair",

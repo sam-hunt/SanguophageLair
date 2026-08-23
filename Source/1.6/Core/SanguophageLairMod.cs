@@ -1,13 +1,14 @@
-using HarmonyLib;
 using UnityEngine;
 using Verse;
 
 namespace SanguophageLair;
 
-// Mod entry point. Wires up settings and applies all Harmony patches at startup.
-// Add patch classes under the SanguophageLair.Patches namespace (use a *Patches
-// suffix on patch sub-namespaces to avoid RimWorld type conflicts); PatchAll
-// discovers them automatically via their [HarmonyPatch] attributes.
+// Mod entry point. Wires up settings. Deliberately Harmony-free: nothing here
+// patches anything, and the planned feature set (quest site, portal, pocket-map
+// generator) is achievable through defs and vanilla extension points alone. If a
+// patch ever becomes unavoidable, re-add Lib.Harmony to the csproj and
+// brrainz.harmony to About.xml (modDependencies + loadAfter), and read CLAUDE.md's
+// patch-timing hazard before wiring PatchAll into this constructor.
 public class SanguophageLairMod : Mod
 {
     public static SanguophageLairSettings Settings { get; private set; }
@@ -20,9 +21,6 @@ public class SanguophageLairMod : Mod
     {
         ContentPack = content;
         Settings = GetSettings<SanguophageLairSettings>();
-        var harmony = new Harmony("shunter.sanguophagelair");
-        harmony.PatchAll();
-        Log.Message($"[Sanguophage Lair] Initialized with {harmony.GetPatchedMethods().EnumerableCount()} patches.");
     }
 
     public override void DoSettingsWindowContents(Rect inRect)

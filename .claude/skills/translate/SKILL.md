@@ -48,10 +48,9 @@ the pin here. Mod-specific findings (coined terms, phrasing decisions) go in
   defines its own Def subclasses, their DefInjected folders would need
   namespace-qualified names (`SanguophageLair.<DefClass>`), unlike vanilla
   def types, which resolve bare.
-- **No gated compat load roots today** — Harmony and Biotech are both hard
-  dependencies of this mod rather than optional compat surfaces, so there is
-  no MayRequire-gated `1.6/Mods/<Package>/Languages/...` subtree to route
-  translations into.
+- **No gated compat load roots today** — Biotech is a hard dependency of this
+  mod rather than an optional compat surface, so there is no MayRequire-gated
+  `1.6/Mods/<Package>/Languages/...` subtree to route translations into.
 
 ## This mod's grounding domain
 
