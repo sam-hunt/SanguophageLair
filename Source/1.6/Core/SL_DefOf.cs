@@ -1,4 +1,5 @@
 using RimWorld;
+using Verse;
 
 namespace SanguophageLair;
 
@@ -8,13 +9,17 @@ namespace SanguophageLair;
 // DLC-gated or MayRequire-gated defs carry the matching [MayRequireX] attribute so DefOf init
 // doesn't error when the gate is closed (the field stays null; consumers null-guard).
 //
-// Empty until the first defs land. Expected early residents: the lair QuestScriptDef and
-// SitePartDef, the portal ThingDef, and the pocket-map MapGeneratorDef (see
-// Settings_Quests.cs, which switches from GetNamedSilentFail to a handle here once the
-// quest def ships).
+// Expected later residents: the lair QuestScriptDef and SitePartDef (see Settings_Quests.cs,
+// which switches from GetNamedSilentFail to a handle here once the quest def ships).
 [DefOf]
 public static class SL_DefOf
 {
+    // GenStep_PlaceStairwellExit: fallback exit when no portal is generating the pocket map.
+    public static ThingDef SL_AncientStairwellExit;
+
+    // TileMutatorWorker_SanguophageLair: the surface pad spawned around the stairwell entrance.
+    public static PrefabDef SL_StairwellSurface;
+
     static SL_DefOf()
     {
         DefOfHelper.EnsureInitializedInCtor(typeof(SL_DefOf));

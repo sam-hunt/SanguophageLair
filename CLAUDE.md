@@ -215,12 +215,18 @@ custom portal building (a `MapPortal` subclass) that generates and links a pocke
 dedicated `MapGeneratorDef` subtree (custom `GenStepDef`s, layout defs) builds the lair itself.
 
 **Shipped so far:** the portal pair (`SL_AncientStairwell`/`SL_AncientStairwellExit`, stony-
-stuffable — `1.6/Defs/ThingDefs/AncientStairwell.xml` + `Source/1.6/MapPortals/`) and a
-scaffold pocket-map generator (`SL_Lair`, a bare Core-only cave) — decompile-verified call
-paths and the stuff/two-layer-draw rationale live in those files' headers. Still pending: the
-quest/site defs, the real lair `MapGeneratorDef` subtree (which replaces the scaffold's
-`PlaceCaveExit` with a genstep spawning `portal.exitDef` with lair-matched stuff), and the
-site GenStep that spawns the entrance with its stone.
+stuffable — `1.6/Defs/ThingDefs/AncientStairwell.xml` + `Source/1.6/MapPortals/`); the
+scaffold pocket-map generator (`SL_Lair`, a bare Core-only cave whose exit step
+`SL_PlaceStairwellExit` already spawns the real two-layer exit in the entrance's stuff); and
+the **Odyssey landmark entrance**: the `SL_SanguophageLair` tile mutator (compat root
+`1.6/Mods/Odyssey/`, offered on Odyssey landmarks by `Patches/Landmarks_Odyssey.xml`) whose
+worker (`Source/1.6/TileMutators/`) spawns the `SL_StairwellSurface` prefab, re-stuffed in the
+map's dominant rock (`Source/1.6/MapGen/LairRock.cs`), on every map generated from a tile
+carrying it. This is the Odyssey analogue of the ancient-stockpile hatch and exists so the
+lair mapgen can be iterated before the quest shape is decided. Decompile-verified call paths
+live in those files' headers. Still pending: the quest/site defs (shape undecided; they also
+bring the non-Odyssey surface spawner), and the real lair `MapGeneratorDef` subtree behind
+`SL_PlaceStairwellExit`.
 
 **In-family precedent — read before designing:** BetterTradersGuild's smuggler's den quest →
 cargo vault pocket map is the full worked example
@@ -265,10 +271,13 @@ pinned list means the packageId isn't registered there.
   `Sanguophage Lair` in both).
 - **Optional-DLC content:** MayRequire is honored on defs but IGNORED on DefInjected entries, so
   content whose strings depend on an optional DLC/mod must ship from a LoadFolders-gated compat
-  root (`1.6/Mods/<Name>/` with its own `Defs`/`Languages` inside). None exist today — Biotech is
-  a hard dependency — but a compat root's language files must never reuse a main-tree file's
+  root (`1.6/Mods/<Name>/` with its own `Defs`/`Patches`/`Languages` inside). One exists today:
+  `1.6/Mods/Odyssey/` (the landmark tile mutator and its landmark patch; Biotech, the hard
+  dependency, needs none). A compat root's language files must never reuse a main-tree file's
   language-relative path (the game dedups per mod by that path and silently skips one whole
-  file); suffix compat-root filenames with the gate's name.
+  file); suffix compat-root filenames with the gate's name. The pinned mod lists in
+  `Scripts/integration-smoke-test.py` and `Scripts/refresh-translation-expectations.py` carry
+  every gate's DLC so the smoke boot and the probe actually see the gated content.
 - **Policy:** translation generation passes run only on explicit request (they are
   token-expensive), one language at a time. Infra/tooling changes are always fine.
 
@@ -276,3 +285,11 @@ pinned list means the packageId isn't registered there.
 
 For reading `Player.log` or disassembling the RimWorld API, use the `rimworld-logs` skill.
 Logging convention: `Log.Message("[Sanguophage Lair] ...")`.
+
+**Iterating on the lair mapgen (dev mode, Odyssey active):** on a colony map, Dev menu → Map →
+`AddMutatorToCurrentMapTile` → `SL_SanguophageLair`, then `RegenerateCurrentMap`, forces the
+surface entrance onto the current map; `RegenerateMapWithLandmark` (any landmark patched in
+`Landmarks_Odyssey.xml`) instead rerolls the tile's mutators as world gen would. On the world
+map, `Set landmark` / `Clear Landmark` place landmarks by hand. `GeneratePocketMap` → `SL_Lair`
+generates the lair with no portal: the exit step then falls back to default stuff and vanilla
+`PocketMapExit` logs "could not find map portal", which is expected there.

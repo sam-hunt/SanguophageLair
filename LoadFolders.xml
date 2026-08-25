@@ -16,7 +16,9 @@
          gate itself: defs support MayRequire, but DefInjected entries do not (the
          loader ignores attributes on them). Safe to nest inside 1.6 because the
          game only scans well-known folders (Languages/, Defs/, ...) directly under
-         a load root, so the plain 1.6 entry above never sees Mods/. None yet:
-         Biotech is a hard dependency, so nothing needs a gate today. -->
+         a load root, so the plain 1.6 entry above never sees Mods/. Odyssey is the one
+         gate today: the lair's landmark tile mutator (a labelled def) and the patch that
+         offers it on Odyssey's landmarks. Biotech is a hard dependency and needs none. -->
+    <li IfModActive="ludeon.rimworld.odyssey">1.6/Mods/Odyssey</li>
   </v1.6>
 </loadFolders>

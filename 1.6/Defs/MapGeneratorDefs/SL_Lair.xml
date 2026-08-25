@@ -9,10 +9,10 @@
     the real lair subtree (custom GenSteps, layout defs) is built. Every def referenced here
     is Core-owned (verified against Data/ - no Odyssey/Anomaly dependency).
 
-    PlaceCaveExit is the placeholder exit step: GenStep_PlaceCaveExit hardcodes vanilla
-    CaveExit (rope look, self-links to the entrance via PocketMapExit.SpawnSetup) and sets
-    PlayerStartSpot. The lair layout replaces it with our own genstep that spawns
-    portal.exitDef (SL_AncientStairwellExit) with stuff matching the lair rock.
+    SL_PlaceStairwellExit (1.6/Defs/GenStepDefs/PlaceStairwellExit.xml) stands where vanilla
+    PlaceCaveExit would: it spawns the generating portal's exitDef (SL_AncientStairwellExit)
+    in the entrance's stuff and sets PlayerStartSpot, so the portal already round-trips with
+    the real two-layer stairwell at both ends while the rest of the lair is scaffold.
 
     label is player-facing: MapPortal composes it into "View sanguophage lair" and
     "Exit sanguophage lair" gizmo/command strings.
@@ -38,7 +38,7 @@
       <li>Terrain</li>
       <li>MutatorPostTerrain</li>
       <li>RockChunks</li>
-      <li>PlaceCaveExit</li>
+      <li>SL_PlaceStairwellExit</li>
       <li>Plants</li>
       <li>MutatorFinal</li>
       <li>Fog</li>

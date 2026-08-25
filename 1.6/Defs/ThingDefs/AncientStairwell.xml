@@ -8,12 +8,14 @@
     Core's PocketMapExit/CaveExit (Data/Core/Defs/ThingDefs_Buildings/Buildings_Misc.xml)
     for the exit side.
 
-    Both ends are made-from-stuff (Stony) so the stairwell matches the lair's rock. The map
-    generator that spawns them owns the stuff choice (ThingMaker.MakeThing with an explicit
-    stony stuff; spawning without one logs an error and falls back to the default stony
-    stuff). The textures are authored near-white grayscale so the stuff tint carries the
-    color. costStuffCount only feeds derived stats here (neither end is player-buildable or
-    killable); ~5/cell like walls, rounded to 250.
+    Both ends are made-from-stuff (Stony) so the stairwell matches the rock it is cut into.
+    The spawner owns the stuff choice: the surface end is spawned by
+    TileMutatorWorker_SanguophageLair in the surface map's dominant rock (LairRock.cs), and
+    the pocket-map end by GenStep_PlaceStairwellExit in the entrance's stuff, so one staircase
+    is one stone. (ThingMaker.MakeThing without a stuff logs an error and falls back to the
+    default stony stuff.) The textures are authored near-white grayscale so the stuff tint
+    carries the color. costStuffCount only feeds derived stats here (neither end is
+    player-buildable or killable); ~5/cell like walls, rounded to 250.
 
     Decompile-verified call paths (1.6 Assembly-CSharp) this file relies on:
     - MapPortal is concrete: first entry runs GetOtherMap() -> PocketMapUtility.GeneratePocketMap
@@ -23,8 +25,8 @@
     - PocketMapExit.SpawnSetup self-links: entrance = PocketMapUtility.currentlyGeneratingPortal,
       entrance.exit = this. The exit only needs to be spawned during pocket-map generation.
     - portal.exitDef has NO vanilla C# consumer (GenStep_PlaceCaveExit hardcodes CaveExit).
-      It is declared here as the contract our own exit-placement genstep reads (future
-      map-gen work), the same role it plays on vanilla defs.
+      Its reader is our GenStep_PlaceStairwellExit (the SL_Lair exit step), the same role it
+      plays on vanilla defs whose own gensteps read it (Odyssey's AncientHatch).
     - Pocket-map teardown is vanilla: Game.DeinitAndRemoveMap destroys pocket maps whose
       sourceMap is the removed map, so abandoning the surface site can't leak the lair map.
     - tickerType Normal (vanilla InsectLairEntrance omits it and defaults to Never) because

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <!--
+    Offers the SL_SanguophageLair mutator on Odyssey landmarks, the way the Stockpile mutator
+    is offered (0.05 on most landmarks, 0.15 on the man-made and dune ones, 0.25 on frozen
+    ruins). Odyssey-only: lives in the compat root so the xpath can't miss without the DLC
+    (a PatchOperationAdd whose xpath matches nothing logs an error).
+
+    Each landmark rolls its mutatorChances independently at world generation
+    (WorldLandmarks.AddLandmark), so the chance is per landmark of that kind, not per world.
+    A default planet carries roughly TilesCount * 0.0022 landmarks (WorldGenStep_Landmarks),
+    weighted by LandmarkDef.commonality, which is what makes the numbers below land at "a few
+    lairs per world": enough to be found while the mapgen is being iterated on, rare enough to
+    stay a discovery. Tuning knob for later: a settings slider writing MutatorChance.chance.
+
+    Landmark picks: the rock-and-hollow landmarks (a lair is cut into stone, and a cliff or
+    chasm is where an ancient stairwell reads as native) at the higher chance; the ancient
+    man-made landmarks at the lower one, as a lair reusing older ruins. Wet, lava, coastal and
+    ice landmarks are left out: nothing to carve, or nowhere sanguophages would settle.
+  -->
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/LandmarkDef[defName="Cavern" or defName="Chasm" or defName="Crevasse" or defName="Hollow" or defName="Cliffs" or defName="Plateau" or defName="Valley" or defName="Basin"]/mutatorChances</xpath>
+    <value>
+      <SL_SanguophageLair>0.15</SL_SanguophageLair>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/LandmarkDef[defName="Ruins" or defName="FrozenRuins" or defName="AncientQuarry"]/mutatorChances</xpath>
+    <value>
+      <SL_SanguophageLair>0.05</SL_SanguophageLair>
+    </value>
+  </Operation>
+
+</Patch>

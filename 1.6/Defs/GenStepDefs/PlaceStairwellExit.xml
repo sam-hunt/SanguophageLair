@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- Exit-placement step of the SL_Lair pocket map: spawns the generating portal's exitDef
+       (SL_AncientStairwellExit) in the entrance's stuff and sets the player start spot. Same
+       order as vanilla PlaceCaveExit (400: after Terrain/RockChunks at 200-300, before Plants
+       at 500), which it replaces in SL_Lair's genstep list; algorithm and rationale in
+       Source/1.6/MapGen/GenStep_PlaceStairwellExit.cs. -->
+  <GenStepDef>
+    <defName>SL_PlaceStairwellExit</defName>
+    <order>400</order>
+    <genStep Class="SanguophageLair.GenStep_PlaceStairwellExit" />
+  </GenStepDef>
+
+</Defs>

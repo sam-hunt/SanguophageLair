@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    SL_StairwellSurface: the pad the lair's surface entrance sits on. Spawned by
+    TileMutatorWorker_SanguophageLair (Source/1.6/TileMutators/), which also lays the map
+    rock's smooth floor under the whole 11x11 footprint and, through PrefabUtility's
+    overrideSpawnData hook, re-stuffs every made-from-stuff thing here in that rock's blocks
+    and swaps the granite chunks for the rock's own. So the stuff values below are granite
+    PLACEHOLDERS (the prefab loader requires a stuff for made-from-stuff things); what spawns
+    is whatever stone the hill is made of. Keep everything stuffable in the Stony category.
+
+    Layout (top view, x right, z up; S = SL_AncientStairwell 7x7 centered at (5,5), C = column,
+    c = chunk, chance-gated):
+
+        x: 0 1 2 3 4 5 6 7 8 9 10
+    z=10:  . . . . . c . . . . .
+    z=9:   . C . . . . . . . C .
+    z=8:   . . S S S S S S S . .
+    z=7:   . . S S S S S S S . .
+    z=6:   . . S S S S S S S . .
+    z=5:   c . S S S S S S S . c
+    z=4:   . . S S S S S S S . .
+    z=3:   . . S S S S S S S . .
+    z=2:   . . S S S S S S S . .
+    z=1:   . C . . . . . . . C .
+    z=0:   . . . . . c . . . . .
+
+    Deliberately sparse: this is the "iterate on the lair mapgen" shape, a marker the player can
+    read from orbit view and walk up to. A fuller surface site (a ruin around the stairwell via
+    TileMutatorDef.structureGenParms + TileMutatorWorker_AncientStructure) is the upgrade path
+    noted in the worker's header. Prefab format: Odyssey's Data/Odyssey/Defs/PrefabDefs/
+    MutatorPrefabs.xml (the AncientUplink pad) is the direct precedent.
+  -->
+  <PrefabDef>
+    <defName>SL_StairwellSurface</defName>
+    <size>(11,11)</size>
+    <rotations>North</rotations>
+    <things>
+      <SL_AncientStairwell>
+        <position>(5,0,5)</position>
+        <stuff>BlocksGranite</stuff>
+      </SL_AncientStairwell>
+      <Column>
+        <positions>
+          <li>(1,0,1)</li>
+          <li>(9,0,1)</li>
+          <li>(1,0,9)</li>
+          <li>(9,0,9)</li>
+        </positions>
+        <stuff>BlocksGranite</stuff>
+      </Column>
+      <ChunkGranite>
+        <chance>0.5</chance>
+        <positions>
+          <li>(0,0,5)</li>
+          <li>(10,0,5)</li>
+          <li>(5,0,0)</li>
+          <li>(5,0,10)</li>
+        </positions>
+      </ChunkGranite>
+    </things>
+  </PrefabDef>
+
+</Defs>

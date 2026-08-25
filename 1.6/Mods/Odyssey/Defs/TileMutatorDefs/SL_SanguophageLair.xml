@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    SL_SanguophageLair: the world-tile mutator that puts a lair entrance on a map.
+
+    Odyssey-only content, shipped from the LoadFolders-gated compat root (1.6/Mods/Odyssey/):
+    the TileMutatorDef type is Core, but the def only ever reaches a tile through Odyssey's
+    landmarks (Patches/Landmarks_Odyssey.xml adds it to their mutatorChances, and
+    WorldGenStep_Landmarks bails without Odyssey), and its label/description are DefInjected
+    strings, which cannot MayRequire-gate themselves (see LoadFolders.xml).
+
+    Pattern source: Odyssey's Stockpile mutator (Data/Odyssey/Defs/TileMutators/
+    TileMutators_ManMade.xml), which is what puts an "ancient stockpile entrance" hatch on
+    landmark maps: a plain TileMutatorDef whose worker spawns the portal building on the surface
+    map, offered on landmarks at a small per-landmark chance. Differences: our worker spawns a
+    prefab (SL_StairwellSurface) rather than a SketchResolver, and the label is the def's own
+    (the stockpile overrides GetLabel to name its randomly rolled contents; the lair has one
+    kind).
+
+    Selection mechanics (decompile-verified, 1.6): WorldLandmarks.AddLandmark rolls each of a
+    landmark's mutatorChances independently (Rand.Chance(chance) && mutator.IsValidTile), so
+    this mutator stacks with a landmark's own required mutator and any others that roll. It is
+    never placed on landmark-free tiles: chanceOnNonLandmarkTile stays at its default 0, the
+    same choice the stockpile makes, so the lair is always a landmark discovery.
+
+    The label is player-facing: it is the mutator line in the world-tile inspector and the
+    landmark tooltip, so it says what the tile has, not what the mod is called.
+  -->
+  <TileMutatorDef>
+    <defName>SL_SanguophageLair</defName>
+    <label>sanguophage lair</label>
+    <description>An ancient stone stairwell here descends into a sanguophage lair. Its occupants have kept the stairs worn smooth over the centuries, and they are unlikely to welcome daylight visitors.</description>
+    <workerClass>SanguophageLair.TileMutatorWorker_SanguophageLair</workerClass>
+    <!-- No rock to cut the stairwell from and no Heavy-affordance ground to set it on. -->
+    <biomeBlacklist>
+      <li>SeaIce</li>
+    </biomeBlacklist>
+  </TileMutatorDef>
+
+</Defs>
