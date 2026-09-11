@@ -57,7 +57,7 @@ build redeploys automatically and atomically — there is no separate clean step
   (`Source/1.6/SanguophageLair.csproj`) — the only place to edit the manifest. It whitelists by
   file type per content folder (`About`, `Assemblies`, `Defs`, `Patches`, `Languages`, plus
   `Textures`/`Sounds` if ever added), matched at the root, under any version folder, and (for
-  `Defs`/`Languages`) under gated compat load roots (`<version>/Mods/<Mod Name>/`, see
+  `Defs`/`Patches`/`Languages`) under gated compat load roots (`<version>/Mods/<Mod Name>/`, see
   LoadFolders.xml), so a new content folder of an existing type deploys automatically and only a
   brand-new file type needs a new line. Only game-loaded types are listed (e.g. `.xml`), so stray
   dev notes (`README.md`, `RESEARCH.md`) never ship.
