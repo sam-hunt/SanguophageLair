@@ -71,7 +71,9 @@ build redeploys automatically and atomically — there is no separate clean step
 - **Stop hook (`.claude/hooks/sync-mod.sh`, gitignored/local-only):** after each turn,
   rebuilds+redeploys only when mod source/content actually changed (doc-only turns are a fast
   no-op) and warns on build failure rather than leaving a stale DLL. Mechanism details are in the
-  script's own header.
+  script's own header. Its `find` watch list must cover every content root `StageMod` ships (root,
+  any version folder, and the compat roots `Mods/` and `*/Mods/`), or edits under a missed root
+  silently stop redeploying.
 
 **Releases:** Push a tag matching `v*.*.*` to trigger the release workflow
 (`.github/workflows/release.yml`), or use the `release` skill which walks the whole process.
