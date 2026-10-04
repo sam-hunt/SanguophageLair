@@ -16,5 +16,8 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyVersion("0.1.0.0")]
 [assembly: AssemblyFileVersion("0.1.0.0")]
+// Mirrors About.xml <modVersion> verbatim, including any SemVer prerelease suffix
+// (1.4.0-rc.1); the two numeric attributes above can't hold one and stay X.Y.Z.0.
+[assembly: AssemblyInformationalVersion("0.1.0")]
 
 [assembly: InternalsVisibleTo("SanguophageLair.Tests")]
