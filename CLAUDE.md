@@ -70,8 +70,9 @@ build redeploys automatically and atomically — there is no separate clean step
   the local deploy. Triggers on `v*.*.*` tags.
 - **Stop hook (`.claude/hooks/sync-mod.sh`, gitignored/local-only):** after each turn,
   rebuilds+redeploys only when mod source/content actually changed (doc-only turns are a fast
-  no-op) and warns on build failure rather than leaving a stale DLL. Mechanism details are in the
-  script's own header. Its `find` watch list must cover every content root `StageMod` ships (root,
+  no-op) and, on build failure, exits 2 with the errors on stderr so Claude Code feeds them back and the
+  turn continues (a second failure in the same turn, `stop_hook_active`, only warns, so it cannot
+  loop). Mechanism details are in the script's own header. Its `find` watch list must cover every content root `StageMod` ships (root,
   any version folder, and the compat roots `Mods/` and `*/Mods/`), or edits under a missed root
   silently stop redeploying.
 
@@ -81,7 +82,7 @@ build redeploys automatically and atomically — there is no separate clean step
 **`.claude/` is only partly gitignored.** `.gitignore` carries `.claude/*` followed by
 `!.claude/skills/`, so the skills are tracked and shared while hooks and settings are local
 per-machine. Editing a skill is therefore a committed, team-visible change and must keep in step
-with whatever it automates: `/release`'s step 6 encodes this repo's CHANGELOG layout and the
+with whatever it automates: `/release`'s step 7 encodes this repo's CHANGELOG layout and the
 version scheme (release candidates are `X.Y.Z-rc.N` tags, CHANGELOG-less and Workshop-less, with
 the suffix in `modVersion` and `AssemblyInformationalVersion` only; `release.yml` treats any
 suffixed tag as a prerelease to match), and `/translate`'s glossary encodes per-language
@@ -100,7 +101,8 @@ xUnit suite under `Tests/1.6/` (a separate project, never shipped). Run natively
 dotnet test Tests/1.6/SanguophageLair.Tests.csproj
 ```
 
-vstest hosts the net472 suite via mono automatically. CI builds but doesn't run it.
+vstest hosts the net472 suite via mono automatically. CI builds but doesn't run it. The release
+skill runs the suite and a Release build as its first gate.
 
 Run tests natively from WSL — never build from the Windows toolchain: it corrupts the WSL-side
 incremental state (shared `obj/` seen under different path roots). The test csproj copies the
@@ -174,6 +176,10 @@ explicit `== null`/`!= null` guards for those types. Verse types (`Thing`, `Pawn
 defs) are plain classes where `?.` is fine. Enforced at build time by UNT0007/UNT0008/UNT0023
 (Microsoft.Unity.Analyzers). Corollary: never bulk-apply Roslynator's RCS1146 (use conditional
 access) fixer to Unity-typed receivers; see the note in `.editorconfig`.
+
+**Warnings are build errors.** The csproj files set `TreatWarningsAsErrors`, so every compiler and
+analyzer warning fails the build, locally, in the Stop hook and in CI. `.editorconfig` severities
+at `warning` block the build; `suggestion` is IDE-only.
 
 **Logging:** Prefix mod-specific logs with the mod name — `Log.Message("[Sanguophage Lair] ...")`.
 
@@ -270,7 +276,7 @@ pinned list means the packageId isn't registered there.
   mod-independent learnings go upstream in the canonical checkout; mod-specific learnings go in
   this repo's skill/glossary. Upstream ships as semver release tags (`vMAJOR.MINOR.PATCH`; a
   major means this repo's shim or flow needs an edit), and the pin here moves only at release
-  (release skill step 2), at the start of a translation pass, or when a new major lands, never
+  (release skill step 3), at the start of a translation pass, or when a new major lands, never
   per upstream commit, so `git submodule status` names the pinned tag and a stable repo's log
   stays free of pin bumps.
 - **Workshop title coupling:** each language's `SL_SettingsCategory` Keyed value is the localized
