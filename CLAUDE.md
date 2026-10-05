@@ -68,20 +68,25 @@ build redeploys automatically and atomically — there is no separate clean step
 - **CI reuses the same target:** `.github/workflows/release.yml` invokes `StageMod` with
   `-p:StageDir=<release dir>` instead of its own `cp` list, so the release zip can't drift from
   the local deploy. Triggers on `v*.*.*` tags.
-- **Stop hook (`.claude/hooks/sync-mod.sh`, gitignored/local-only):** after each turn,
+- **Stop hook (`.claude/hooks/sync-mod.sh`):** after each turn,
   rebuilds+redeploys only when mod source/content actually changed (doc-only turns are a fast
   no-op) and, on build failure, exits 2 with the errors on stderr so Claude Code feeds them back and the
   turn continues (a second failure in the same turn, `stop_hook_active`, only warns, so it cannot
   loop). Mechanism details are in the script's own header. Its `find` watch list must cover every content root `StageMod` ships (root,
   any version folder, and the compat roots `Mods/` and `*/Mods/`), or edits under a missed root
-  silently stop redeploying.
+  silently stop redeploying. Logs to `$TMPDIR/SanguophageLair-build.log`. Tracked and wired by
+  the tracked `.claude/settings.json`; the script is byte-identical across the mod family and
+  derives the solution, project folder and mod name itself, so change it in the template and
+  copy it verbatim, never per repo. It bails when no RimWorld install is found, so CI and
+  contributors without the game are unaffected.
 
 **Releases:** Push a tag matching `v*.*.*` to trigger the release workflow
 (`.github/workflows/release.yml`), or use the `release` skill which walks the whole process.
 
 **`.claude/` is only partly gitignored.** `.gitignore` carries `.claude/*` followed by
-`!.claude/skills/`, so the skills are tracked and shared while hooks and settings are local
-per-machine. Editing a skill is therefore a committed, team-visible change and must keep in step
+`!.claude/skills/`, `!.claude/hooks/` and `!.claude/settings.json`, so the skills, the Stop hook
+and its wiring are tracked and shared while `settings.local.json` (personal permissions) stays
+local per machine. Editing a skill is therefore a committed, team-visible change and must keep in step
 with whatever it automates: `/release`'s step 7 encodes this repo's CHANGELOG layout and the
 version scheme (release candidates are `X.Y.Z-rc.N` tags, CHANGELOG-less and Workshop-less, with
 the suffix in `modVersion` and `AssemblyInformationalVersion` only; `release.yml` treats any
